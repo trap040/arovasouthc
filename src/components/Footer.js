@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt, faPhone, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
@@ -11,9 +11,9 @@ const Footer = () => {
         <div className="grid max-w-[1200px] mx-auto gap-8 text-center md:grid-cols-2 md:text-start lg:grid-cols-footer">
           {/* Logo & Description */}
           <div className="md:me-2 lg:me-3">
-            <a href="/" className="text-lion font-gilda font-normal text-2xl tracking-[.04em]">
+            <Link href="/" className="text-lion font-gilda font-normal text-2xl tracking-[.04em]">
               Arova<span className="text-white">Hotel</span>
-            </a>
+            </Link>
             <p className="text-white font-light font-barlow text-base mt-3 max-w-[480px] mx-auto md:ms-0">
               Welcome to the best five-star deluxe hotel in Nairobi city.
             </p>

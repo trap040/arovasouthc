@@ -18,7 +18,7 @@ const SuitesSection = () => {
         </div>
         <div className="grid gap-10 md:grid-cols-2 py-10">
           <p className="text-black opacity-60 font-light text-base sm:text-lg font-barlow first-letter:text-4xl first-letter:font-bold first-letter:tracking-[.03em]">
-          Experience comfort and luxury in our thoughtfully designed rooms and suites. Whether you're here for business 
+          Experience comfort and luxury in our thoughtfully designed rooms and suites. Whether you&apos;re here for business 
           or leisure, our accommodations offer modern amenities, stylish interiors, 
           and a relaxing ambiance. Choose from a range of options to suit your needs and enjoy a stay like no other.
           </p>
