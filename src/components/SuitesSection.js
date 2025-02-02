@@ -1,4 +1,3 @@
-// src/components/SuitesSection.js
 import Image from 'next/image';
 
 const SuitesSection = () => {
@@ -18,9 +17,9 @@ const SuitesSection = () => {
         </div>
         <div className="grid gap-10 md:grid-cols-2 py-10">
           <p className="text-black opacity-60 font-light text-base sm:text-lg font-barlow first-letter:text-4xl first-letter:font-bold first-letter:tracking-[.03em]">
-          Experience comfort and luxury in our thoughtfully designed rooms and suites. Whether you&apos;re here for business 
-          or leisure, our accommodations offer modern amenities, stylish interiors, 
-          and a relaxing ambiance. Choose from a range of options to suit your needs and enjoy a stay like no other.
+            Experience comfort and luxury in our thoughtfully designed rooms and suites. Whether you&apos;re here for business 
+            or leisure, our accommodations offer modern amenities, stylish interiors, 
+            and a relaxing ambiance. Choose from a range of options to suit your needs and enjoy a stay like no other.
           </p>
 
           <ul className="bg-lion py-5 sm:py-9 px-7">
@@ -60,10 +59,10 @@ const SuitesSection = () => {
           </ul>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-[4px]">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <a
             href="#"
-            className="object-cover relative after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-b from-black/25 to-black/75 hover:before before:absolute before:content-[''] before:top-3 before:left-3 before:right-3 before:bottom-3 before:border-white before:border-2 before:border-solid before:z-10 before:opacity-0 hover:before:opacity-100 before:transition before:duration-300 before:ease-in-out"
+            className="object-cover relative text-center after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-b from-black/25 to-black/75 hover:before before:absolute before:content-[''] before:top-3 before:left-3 before:right-3 before:bottom-3 before:border-white before:border-2 before:border-solid before:z-10 before:opacity-0 hover:before:opacity-100 before:transition before:duration-300 before:ease-in-out"
           >
             <Image
               src="/images/room-1.png"
@@ -72,14 +71,14 @@ const SuitesSection = () => {
               width={500}
               height={500}
             />
-            <div className="absolute bottom-0 left-2/4 -translate-x-2/4 text-white font-medium uppercase text-xl md:text-2xl font-barlow z-10 px-4 mb-14 text-center w-full tracking-widest">
-              Stay Room
+            <div className="absolute bottom-6 left-0 right-0 text-white font-medium uppercase text-xl md:text-2xl font-barlow z-10 px-4 text-center w-full tracking-widest">
+              VIP Rooms
             </div>
           </a>
 
           <a
             href="#"
-            className="object-cover relative after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-b from-black/25 to-black/75 hover:before before:absolute before:content-[''] before:top-3 before:left-3 before:right-3 before:bottom-3 before:border-white before:border-2 before:border-solid before:z-10 before:opacity-0 hover:before:opacity-100 before:transition before:duration-300 before:ease-in-out"
+            className="object-cover relative text-center after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-b from-black/25 to-black/75 hover:before before:absolute before:content-[''] before:top-3 before:left-3 before:right-3 before:bottom-3 before:border-white before:border-2 before:border-solid before:z-10 before:opacity-0 hover:before:opacity-100 before:transition before:duration-300 before:ease-in-out"
           >
             <Image
               src="/images/room-2.png"
@@ -88,14 +87,14 @@ const SuitesSection = () => {
               width={500}
               height={500}
             />
-            <div className="absolute bottom-0 left-2/4 -translate-x-2/4 text-white font-medium uppercase text-xl md:text-2xl font-barlow z-10 px-4 mb-14 text-center w-full tracking-widest">
-              Conference/Meeting Hall
+            <div className="absolute bottom-6 left-0 right-0 text-white font-medium uppercase text-xl md:text-2xl font-barlow z-10 px-4 text-center w-full tracking-widest">
+              Double Bed Rooms
             </div>
           </a>
 
           <a
             href="#"
-            className="object-cover relative after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-b from-black/25 to-black/75 hover:before before:absolute before:content-[''] before:top-3 before:left-3 before:right-3 before:bottom-3 before:border-white before:border-2 before:border-solid before:z-10 before:opacity-0 hover:before:opacity-100 before:transition before:duration-300 before:ease-in-out"
+            className="object-cover relative text-center after:absolute after:content-[''] after:top-0 after:left-0 after:w-full after:h-full after:bg-gradient-to-b from-black/25 to-black/75 hover:before before:absolute before:content-[''] before:top-3 before:left-3 before:right-3 before:bottom-3 before:border-white before:border-2 before:border-solid before:z-10 before:opacity-0 hover:before:opacity-100 before:transition before:duration-300 before:ease-in-out"
           >
             <Image
               src="/images/room-3.png"
@@ -104,8 +103,8 @@ const SuitesSection = () => {
               width={500}
               height={500}
             />
-            <div className="absolute bottom-0 left-2/4 -translate-x-2/4 text-white font-medium uppercase text-xl md:text-2xl font-barlow z-10 px-4 mb-14 text-center w-full tracking-widest">
-              Wedding
+            <div className="absolute bottom-6 left-0 right-0 text-white font-medium uppercase text-xl md:text-2xl font-barlow z-10 px-4 text-center w-full tracking-widest">
+              Single Rooms
             </div>
           </a>
         </div>
