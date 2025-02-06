@@ -4,6 +4,8 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
+import { storeBookingData } from "../utilis/testFirestore"; // Import the function to store booking data
+import { auth } from "../firebase"; // Import Firebase auth (optional for linking booking to user)
 
 const BookingForm = () => {
   const [checkInDate, setCheckInDate] = useState(null);
@@ -11,9 +13,69 @@ const BookingForm = () => {
   const [adults, setAdults] = useState("");
   const [children, setChildren] = useState("");
   const [rooms, setRooms] = useState("");
+  const [error, setError] = useState(""); // For storing error messages
+  const [successMessage, setSuccessMessage] = useState(""); // For storing success message
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validation: Check that checkOutDate is after checkInDate
+    if (checkOutDate <= checkInDate) {
+      setError("Check-out date must be after check-in date");
+      return;
+    }
+
+    // Validation: Check if at least one adult is selected
+    if (!adults || parseInt(adults) === 0) {
+      setError("At least one adult must be selected");
+      return;
+    }
+
+    // Validation: Check if a room is selected
+    if (!rooms) {
+      setError("Please select a room");
+      return;
+    }
+
+    // Get the current user's UID (if logged in)
+    const user = auth.currentUser;
+
+    // Create the booking data
+    const bookingData = {
+      checkInDate,
+      checkOutDate,
+      adults,
+      children,
+      rooms,
+      userId: user ? user.uid : null, // Store UID if logged in, otherwise null (guest)
+    };
+
+    // Call the function to store the booking data in Firestore
+    try {
+      await storeBookingData(bookingData);
+      setError(""); // Reset error message
+      setSuccessMessage("Booking successful!"); // Display success message
+      // Optionally reset the form
+      setCheckInDate(null);
+      setCheckOutDate(null);
+      setAdults("");
+      setChildren("");
+      setRooms("");
+    } catch (error) {
+      setError("There was an error storing the booking.");
+      console.error("Error storing booking: ", error);
+    }
+  };
 
   return (
-    <form className="font-barlow mt-16 bg-white w-full grid sm:grid-cols-2 lg:grid-cols-6">
+    <form onSubmit={handleSubmit} className="font-barlow mt-16 bg-white w-full grid sm:grid-cols-2 lg:grid-cols-6">
+      {/* Error message */}
+      {error && <p className="text-red-500 text-center">{error}</p>}
+
+      {/* Success message */}
+      {successMessage && <p className="text-green-500 text-center">{successMessage}</p>}
+
       {/* Check-in Date */}
       <div className="flex items-center justify-between px-3 py-4 border">
         <DatePicker
@@ -77,9 +139,11 @@ const BookingForm = () => {
           onChange={(e) => setRooms(e.target.value)}
           className="min-w-full uppercase text-eerie-black outline-none"
         >
-          <option>1 Room</option>
-          <option>2 Rooms</option>
-          <option>3 Rooms</option>
+          <option value="">Select Room</option>
+          <option>Deluxe</option>
+          <option>Single Room</option>
+          <option>Double Rooms</option>
+          <option>VIP Rooms</option>
         </select>
       </div>
 
@@ -88,7 +152,7 @@ const BookingForm = () => {
         type="submit"
         className="bg-lion font-barlow h-full min-h-[52px] flex items-center justify-center uppercase text-white transition duration-300 ease-in-out hover:bg-lion-dark"
       >
-        Check Now
+        Book Now
       </button>
     </form>
   );

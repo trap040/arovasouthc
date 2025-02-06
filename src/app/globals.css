@@ -30,6 +30,44 @@ body {
 .fixed {
   position: fixed;
 }
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+/*ADMIN DASHBOARD TABS*/
+.tab:hover {
+  background-color: #f3f4f6;
+  cursor: pointer;
+}
+
+.tab:focus {
+  outline: none;
+}
+
+.tab:active {
+  background-color: #d1d5db;
+}
+
+/*booking tab*/
+input, textarea {
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+button {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/*booking tab*/
+/*ADMIN DASHBOARD TABS*/
+
 .relative {
   position: relative;
 }
