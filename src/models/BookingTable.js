@@ -1,4 +1,4 @@
-"use client";
+{/*"use client";
 
 import React, { useEffect, useState } from "react";
 import { fetchBookings } from "../utilis/fetchBookings";
@@ -120,4 +120,4 @@ export const BookingTable = () => {
       )}
     </div>
   );
-};
+};*/}

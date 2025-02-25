@@ -298,7 +298,7 @@ export const BookingManagement = () => {
                 <h3 className="text-platinum font-semibold mb-2">Notes</h3>
                 <textarea
                   value={selectedBooking.notes || ""}
-                  onChange={(e) => {
+                  onChange={() => {
                     // Implement notes update functionality
                   }}
                   className="w-full bg-nero text-platinum px-4 py-2 rounded h-24"

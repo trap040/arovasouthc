@@ -1,4 +1,6 @@
-"use client";
+
+
+{/*"use client";
 
 import { useState, useEffect } from "react";
 import { fetchRooms, addRoom, deleteRoom } from "../utilis/ManageRooms"; // Import utilities
@@ -66,7 +68,7 @@ const ManageRooms = () => {
     <div className="manage-rooms p-4">
       <h2 className="text-2xl font-bold mb-4">Manage Rooms</h2>
 
-      {/* Add Room Form */}
+      {/* Add Room Form */}{/*
       <div className="add-room-form border p-4 rounded-md mb-4">
         <h3 className="text-lg font-semibold mb-2">Add New Room</h3>
         {error && <p className="text-red-500">{error}</p>}
@@ -112,7 +114,7 @@ const ManageRooms = () => {
         </form>
       </div>
 
-      {/* Room List */}
+      {/* Room List */}{/*
       <div>
         <h3 className="text-lg font-semibold mb-2">Room List</h3>
         {rooms.length === 0 ? (
@@ -142,4 +144,4 @@ const ManageRooms = () => {
   );
 };
 
-export default ManageRooms;
+export default ManageRooms; */}

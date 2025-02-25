@@ -26,6 +26,7 @@ const BookingForm = () => {
   const [showRooms, setShowRooms] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
 
+
   // Check room availability
   const handleCheckAvailability = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -152,9 +153,11 @@ const BookingForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {availableRooms.map((room) => (
               <div key={room.id} className="bg-nero-dark rounded-lg overflow-hidden">
-                <img 
+                <Image 
                   src={room.imageURL} 
                   alt={room.name}
+                  width={400}  
+                  height={200}
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-4">

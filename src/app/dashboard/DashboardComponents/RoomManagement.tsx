@@ -2,8 +2,9 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { fetchRooms, deleteRoom, addRoom, updateRoom } from "../../../utilis/firebaseUtils";
+import Image from "next/image";
 
 interface Room {
   id: string;
@@ -102,16 +103,12 @@ export const RoomManagement = () => {
     "Jacuzzi"
   ];
 
-  useEffect(() => {
-    loadRooms();
-  }, []);
-
-  const loadRooms = async () => {
+  const loadRooms = useCallback(async () => {
     try {
       setIsLoading(true);
       const roomData = await fetchRooms();
       setRooms(roomData);
-      
+  
       // Calculate category statistics
       calculateCategoryStats(roomData);
     } catch (error) {
@@ -119,7 +116,11 @@ export const RoomManagement = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []); //  Empty dependency array prevents re-creation
+  
+  useEffect(() => {
+    loadRooms(); //  No warning since loadRooms is stable
+  }, [loadRooms]);
 
   const calculateCategoryStats = (roomData: Room[]) => {
     const stats = {
@@ -812,11 +813,13 @@ export const RoomManagement = () => {
             >
               {/* Image Section */}
               <div className={`relative ${viewMode === 'list' ? 'w-64' : 'w-full'}`}>
-                <img
-                  src={room.imageURL}
-                  alt={room.name}
-                  className="w-full h-48 object-cover"
-                />
+              <Image
+                src={room.imageURL}
+                alt={room.name}
+                width={400} 
+                height={200} 
+                className="w-full h-48 object-cover"
+              />
                 <div className={`absolute top-2 right-2 px-2 py-1 rounded text-white text-sm ${getStatusColor(room.status)}`}>
                   {room.status}
                 </div>
