@@ -106,7 +106,7 @@ const ManageRooms = () => {
             />
             <span>Available</span>
           </label>
-          <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded">
+          <button type="submit" className="bg-gray-600 text-gray px-4 py-2 rounded">
             Add Room
           </button>
         </form>
@@ -128,7 +128,7 @@ const ManageRooms = () => {
                   <p className="text-gray-600">Price: ${room.price}</p>
                   <button
                     onClick={() => handleDeleteRoom(room.id)}
-                    className="bg-red-600 text-white px-2 py-1 mt-2 rounded"
+                    className="bg-gray-600 text-white px-2 py-1 mt-2 rounded"
                   >
                     Delete
                   </button>
