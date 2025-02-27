@@ -1,6 +1,6 @@
 // src/utilis/firebaseUtils.ts
 
-import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, Timestamp } from "firebase/firestore";
+import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, Timestamp, getDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
 
 // Room Interfaces
@@ -53,6 +53,9 @@ export interface Booking {
   customerName: string;
   phoneNumber: string;
   email: string;
+  gender?: string;
+  nationality?: string;
+  idNumber?: string;
   checkInDate: { seconds: number };
   checkOutDate: { seconds: number };
   bookingDate: { seconds: number };
@@ -64,6 +67,15 @@ export interface Booking {
   totalAmount: number;
   paymentStatus: "pending" | "partial" | "paid";
   notes?: string;
+  // Room details for the booking confirmation
+  roomDetails?: {
+    id: string;
+    name: string;
+    price: number;
+    imageURL: string;
+  };
+  // Total nights for the stay
+  totalNights?: number;
 }
 
 // Room Management Functions
@@ -77,6 +89,25 @@ export const fetchRooms = async (): Promise<Room[]> => {
     })) as Room[];
   } catch (error) {
     console.error("Error fetching rooms:", error);
+    throw error;
+  }
+};
+
+export const fetchRoomById = async (roomId: string): Promise<Room | null> => {
+  try {
+    const roomRef = doc(db, "rooms", roomId);
+    const roomSnapshot = await getDoc(roomRef);
+    
+    if (roomSnapshot.exists()) {
+      return {
+        id: roomSnapshot.id,
+        ...roomSnapshot.data()
+      } as Room;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error("Error fetching room:", error);
     throw error;
   }
 };
@@ -136,6 +167,48 @@ export const fetchBookings = async (): Promise<Booking[]> => {
     })) as Booking[];
   } catch (error) {
     console.error("Error fetching bookings:", error);
+    throw error;
+  }
+};
+
+export const createBooking = async (bookingData: any): Promise<string> => {
+  try {
+    const bookingsCollection = collection(db, "bookings");
+    
+    // Add timestamps for database consistency
+    const dataWithTimestamps = {
+      ...bookingData,
+      createdAt: serverTimestamp(),
+      bookingDate: serverTimestamp(),
+      // Convert string dates to Firestore timestamps if they're not already
+      checkInDate: bookingData.checkInDate ? 
+        (typeof bookingData.checkInDate === 'string' ? 
+          Timestamp.fromDate(new Date(bookingData.checkInDate)) : 
+          bookingData.checkInDate) : 
+        null,
+      checkOutDate: bookingData.checkOutDate ? 
+        (typeof bookingData.checkOutDate === 'string' ? 
+          Timestamp.fromDate(new Date(bookingData.checkOutDate)) : 
+          bookingData.checkOutDate) : 
+        null,
+    };
+    
+    const docRef = await addDoc(bookingsCollection, dataWithTimestamps);
+    
+    // Update room status to occupied
+    if (bookingData.rooms && bookingData.rooms.length > 0) {
+      for (const roomId of bookingData.rooms) {
+        const roomRef = doc(db, "rooms", roomId);
+        await updateDoc(roomRef, {
+          status: 'occupied',
+          updatedAt: serverTimestamp()
+        });
+      }
+    }
+    
+    return docRef.id;
+  } catch (error) {
+    console.error("Error creating booking:", error);
     throw error;
   }
 };

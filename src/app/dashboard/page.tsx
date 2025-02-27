@@ -3,8 +3,8 @@
 "use client";
 
 import { useState } from "react";
-import { BookingManagement } from "./DashboardComponents/BookingManagement";
-import  RoomManagement  from "./DashboardComponents/RoomManagement";
+import BookingManagement  from "./bookings/BookingManagement";
+import  RoomManagement  from "./rooms/RoomManagement";
 
 export default function Dashboard() {
   const [selectedTab, setSelectedTab] = useState("analytics");
