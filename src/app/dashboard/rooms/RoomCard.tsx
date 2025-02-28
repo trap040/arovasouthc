@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { Room, getStatusColor, getCategoryColor } from '../../../types/room';
+import Image from 'next/image';
 
 interface RoomCardProps {
   room: Room;
@@ -17,11 +18,13 @@ const RoomCard: React.FC<RoomCardProps> = ({ room, viewMode, onEdit, onDelete })
     <div className={`bg-nero-dark rounded-lg overflow-hidden ${viewMode === 'list' ? 'flex gap-6' : ''}`}>
       {/* Image Section */}
       <div className={`relative ${viewMode === 'list' ? 'w-64' : 'w-full'}`}>
-        <img
-          src={room.imageURL}
-          alt={room.name}
-          className="w-full h-48 object-cover"
-        />
+      <Image
+  src={room.imageURL}
+  alt={room.name}
+  width={500} // Adjust to your needs
+  height={200} // Adjust to your needs
+  className="object-cover w-full h-48"
+/>
         <div className={`absolute top-2 right-2 px-2 py-1 rounded text-white text-sm ${getStatusColor(room.status)}`}>
           {room.status}
         </div>

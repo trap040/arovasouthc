@@ -1,8 +1,7 @@
 // src/app/dashboard/DashboardComponents/RoomManagement.tsx
-
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { fetchRooms, deleteRoom, addRoom, updateRoom } from "../../../utilis/firebaseUtils";
 import { Room, RoomFormData, CategoryStats as CategoryStatsType } from "../../../types/room";
 
@@ -40,26 +39,7 @@ export const RoomManagement = () => {
     vip: { total: 0, available: 0, occupied: 0, maintenance: 0, cleaning: 0 }
   });
 
-  useEffect(() => {
-    loadRooms();
-  }, []);
-
-  const loadRooms = async () => {
-    try {
-      setIsLoading(true);
-      const roomData = await fetchRooms();
-      setRooms(roomData);
-      
-      // Calculate category statistics
-      calculateCategoryStats(roomData);
-    } catch (error) {
-      console.error("Error loading rooms:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const calculateCategoryStats = (roomData: Room[]) => {
+  const calculateCategoryStats = useCallback((roomData: Room[]) => {
     const stats = {
       single: { total: 0, available: 0, occupied: 0, maintenance: 0, cleaning: 0 },
       comfort: { total: 0, available: 0, occupied: 0, maintenance: 0, cleaning: 0 },
@@ -74,7 +54,26 @@ export const RoomManagement = () => {
     });
 
     setCategoryStats(stats);
-  };
+  }, []);
+
+  const loadRooms = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const roomData = await fetchRooms();
+      setRooms(roomData);
+      
+      // Calculate category statistics
+      calculateCategoryStats(roomData);
+    } catch (error) {
+      console.error("Error loading rooms:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [calculateCategoryStats]);
+
+  useEffect(() => {
+    loadRooms();
+  }, [loadRooms]);
 
   const suggestRoomNumber = (category: 'single' | 'comfort' | 'vip') => {
     // Room number format: Single (101-110), Comfort (201-210), VIP (301-310)

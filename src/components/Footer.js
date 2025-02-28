@@ -67,13 +67,13 @@ const Footer = () => {
                 <span className="text-white">
                   <FontAwesomeIcon icon={faPhone} />
                 </span>
-                <span className="text-white/50 font-light">+254 71234567</span>
+                <span className="text-white/50 font-light">+254 719748888</span>
               </li>
               <li className="my-2 grid grid-cols-[40px_auto] justify-center md:justify-start">
                 <span className="text-white">
                   <FontAwesomeIcon icon={faEnvelope} />
                 </span>
-                <span className="text-white/50 font-light">arova@gmail.com</span>
+                <span className="text-white/50 font-light">arovahotel@gmail.com</span>
               </li>
             </ul>
           </div>

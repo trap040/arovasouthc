@@ -3,15 +3,47 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../../../../firebase'; // Import your existing db instance
+import { doc, getDoc, DocumentData } from 'firebase/firestore';
+import { db } from '../../../../firebase'; 
+
+interface BookingData extends DocumentData {
+  id: string;
+  customerName?: string;
+  phoneNumber?: string;
+  email?: string;
+  gender?: string;
+  nationality?: string;
+  idNumber?: string;
+  checkInDate?: { seconds: number };
+  checkOutDate?: { seconds: number };
+  bookingDate?: { seconds: number };
+  adults?: number;
+  children?: number;
+  rooms?: string[] | string;
+  status?: string;
+  specialRequests?: string;
+  totalAmount?: number;
+  totalNights?: number;
+  paymentStatus?: string;
+  roomDetails?: {
+    id?: string;
+    name?: string;
+    price?: number;
+    imageURL?: string;
+  };
+}
+
+interface TimestampData {
+  seconds: number;
+  nanoseconds?: number;
+}
 
 const BookingConfirmation = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const bookingId = searchParams.get('bookingId');
   
-  const [booking, setBooking] = useState<any>(null);
+  const [booking, setBooking] = useState<BookingData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -59,7 +91,7 @@ const BookingConfirmation = () => {
   };
 
   // Format Firebase Timestamp to string
-  const formatTimestamp = (timestamp: any) => {
+  const formatTimestamp = (timestamp: TimestampData | undefined) => {
     if (!timestamp) return "N/A";
     // Check if it's a Firestore Timestamp
     if (timestamp.seconds !== undefined) {
@@ -72,7 +104,7 @@ const BookingConfirmation = () => {
       });
     }
     // Handle string dates
-    return formatDate(timestamp);
+    return "N/A";
   };
 
   if (isLoading) {
@@ -124,13 +156,15 @@ const BookingConfirmation = () => {
             <p className="text-white mt-2">Booking ID: {booking?.id}</p>
           </div>
           
-          {booking?.roomDetails && (
+          {booking?.roomDetails && booking.roomDetails.imageURL && (
             <div className="flex flex-col md:flex-row gap-6 mb-8">
-              <div className="md:w-1/3">
-                <img
+              <div className="md:w-1/3 relative h-48">
+                <Image
                   src={booking.roomDetails.imageURL}
-                  alt={booking.roomDetails.name}
-                  className="w-full h-48 object-cover rounded"
+                  alt={booking.roomDetails.name || "Room image"}
+                  fill
+                  className="object-cover rounded"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
               <div className="md:w-2/3 text-white">
@@ -147,7 +181,7 @@ const BookingConfirmation = () => {
                   </div>
                   <div>
                     <p className="text-sm opacity-70">Guests</p>
-                    <p className="font-medium">{booking.adults} Adults, {booking.children} Children</p>
+                    <p className="font-medium">{booking.adults || 0} Adults, {booking.children || 0} Children</p>
                   </div>
                   <div>
                     <p className="text-sm opacity-70">Stay</p>
@@ -158,7 +192,7 @@ const BookingConfirmation = () => {
                 <div className="mt-4 pt-4 border-t border-white border-opacity-20">
                   <div className="flex justify-between text-lg">
                     <span>Total Price:</span>
-                    <span className="font-bold">${booking.totalAmount?.toFixed(2)}</span>
+                    <span className="font-bold">${booking.totalAmount ? booking.totalAmount.toFixed(2) : "0.00"}</span>
                   </div>
                 </div>
               </div>

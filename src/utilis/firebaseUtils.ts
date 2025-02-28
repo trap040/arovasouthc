@@ -78,6 +78,33 @@ export interface Booking {
   totalNights?: number;
 }
 
+// Define a dedicated interface for booking creation data
+export interface BookingCreateData {
+  customerName: string;
+  phoneNumber: string;
+  email?: string;
+  gender?: string;
+  nationality?: string;
+  idNumber?: string;
+  checkInDate: string | { seconds: number };
+  checkOutDate: string | { seconds: number };
+  adults: number;
+  children: number;
+  rooms: string[];
+  status: "pending" | "confirmed" | "checked-in" | "checked-out" | "cancelled";
+  specialRequests?: string;
+  totalAmount: number;
+  totalNights?: number;
+  paymentStatus: "pending" | "partial" | "paid";
+  notes?: string;
+  roomDetails?: {
+    id?: string;
+    name?: string;
+    price?: number;
+    imageURL?: string;
+  };
+}
+
 // Room Management Functions
 export const fetchRooms = async (): Promise<Room[]> => {
   try {
@@ -171,7 +198,7 @@ export const fetchBookings = async (): Promise<Booking[]> => {
   }
 };
 
-export const createBooking = async (bookingData: any): Promise<string> => {
+export const createBooking = async (bookingData: BookingCreateData): Promise<string> => {
   try {
     const bookingsCollection = collection(db, "bookings");
     

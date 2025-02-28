@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Image from "next/image";
@@ -24,7 +24,6 @@ const BookingForm = () => {
   const [availableRooms, setAvailableRooms] = useState<AvailableRoom[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showRooms, setShowRooms] = useState<boolean>(false);
-  const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
 
   // Generate options for capacity selection
   const capacityOptions = {
@@ -83,13 +82,11 @@ const BookingForm = () => {
     }
   };
 
-    // Handle room selection
-    const handleRoomSelect = (roomId: string) => {
-      setSelectedRoom(roomId);
-  
-      // Update the path to match your folder structure
-     router.push(`/dashboard/bookings/booking-details?roomId=${roomId}&checkIn=${checkInDate?.toISOString()}&checkOut=${checkOutDate?.toISOString()}&adults=${adults}&children=${children}`);
-    };
+  // Handle room selection
+  const handleRoomSelect = (roomId: string) => {
+    // Update the path to match your folder structure
+    router.push(`/dashboard/bookings/booking-details?roomId=${roomId}&checkIn=${checkInDate?.toISOString()}&checkOut=${checkOutDate?.toISOString()}&adults=${adults}&children=${children}`);
+  };
 
   return (
     <div className="font-barlow mt-16">
@@ -185,18 +182,20 @@ const BookingForm = () => {
           {availableRooms.length === 0 ? (
             <div className="bg-light-gray p-8 text-center rounded">
               <h3 className="text-lg font-bold mb-2">No Available Rooms</h3>
-              <p>We couldn't find any rooms matching your criteria for the selected dates.</p>
+              <p>We couldn&apos;t find any rooms matching your criteria for the selected dates.</p>
               <p className="mt-2">Please try different dates or guest count.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {availableRooms.map((room) => (
                 <div key={room.id} className="bg-white rounded-lg overflow-hidden shadow-md">
-                  <div className="relative">
-                    <img 
-                      src={room.imageURL} 
+                  <div className="relative h-48 w-full">
+                    <Image 
+                      src={room.imageURL}
                       alt={room.name}
-                      className="w-full h-48 object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     {room.category && (
                       <div className="absolute top-2 left-2 bg-lion text-white px-2 py-1 rounded text-xs uppercase">
