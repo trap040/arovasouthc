@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 
 const Header = () => {
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -14,8 +15,13 @@ const Header = () => {
         <div className="container max-w-[1200px] mx-auto flex flex-col">
           <nav className="py-5 md:flex md:justify-between">
             <div className="flex justify-between">
-              <Link href="/" className="font-gilda text-[28px] font-normal text-lion">
-                Arova<span className="text-white">Hotel</span>
+              <Link href="/">
+                <Image 
+                  src="/logo.png" 
+                  alt="Arova Hotel Logo"
+                  width={150} 
+                  height={700} 
+               />
               </Link>
               <button type="button" className="text-white md:hidden" onClick={() => setNavbarOpen(!navbarOpen)}>
                 <FontAwesomeIcon icon={faBars} />

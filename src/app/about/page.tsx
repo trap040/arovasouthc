@@ -93,7 +93,7 @@ const AboutPage = () => {
               </div>
               <h3 className="font-gilda text-xl mb-4 text-eerie-black">Personalization</h3>
               <p className="text-gray-600">
-                We believe in personalized experiences tailored to each guest's unique preferences and needs.
+                We believe in personalized experiences tailored to each guest&apos;s unique preferences and needs.
               </p>
             </div>
             
