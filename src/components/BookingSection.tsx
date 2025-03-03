@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { fetchRooms, createBooking } from '../utilis/firebaseUtils';
 import { Room } from '../types/room';
+import { useMemo } from "react";
 
 interface BookingFormData {
   fullName: string;
@@ -33,8 +34,9 @@ const BookingSection = () => {
   const childrenParam = searchParams.get('children') || "0";
 
   // Parse dates from query parameters
-  const checkInDate = checkInStr ? new Date(checkInStr) : null;
-  const checkOutDate = checkOutStr ? new Date(checkOutStr) : null;
+  const checkInDate = useMemo(() => (checkInStr ? new Date(checkInStr) : null), [checkInStr]);
+
+  const checkOutDate = useMemo(() => (checkOutStr ? new Date(checkOutStr) : null), [checkOutStr]);
 
   // State for selected room and booking info
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
@@ -224,9 +226,11 @@ const handleSubmit = async (e: React.FormEvent) => {
           <div className="my-8 max-w-[824px] mx-auto bg-black bg-opacity-50 p-6 rounded">
             <div className="flex flex-col md:flex-row gap-6">
               <div className="md:w-1/3">
-                <img
+                <Image
                   src={selectedRoom.imageURL}
                   alt={selectedRoom.name}
+                  layout="fill"  
+                  objectFit="cover"  
                   className="w-full h-48 object-cover rounded"
                 />
               </div>

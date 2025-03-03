@@ -163,7 +163,7 @@ const AboutPage = () => {
               <h3 className="font-gilda text-xl mb-2 text-eerie-black">Director Name</h3>
               <p className="text-lion mb-4">Guest Relations Director</p>
               <p className="text-gray-600 px-4">
-                Maria ensures that every guest's stay exceeds expectations through personalized service and attention to detail.
+                Maria ensures that every guest&rsquo;s stay exceeds expectations through personalized service and attention to detail.
               </p>
             </div>
           </div>

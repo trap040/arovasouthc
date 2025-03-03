@@ -79,16 +79,16 @@ const BookingConfirmation = () => {
   }, [bookingId]);
 
   // Format date to string
-  const formatDate = (dateString: string | undefined) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
+  //const formatDate = (dateString: string | undefined) => {
+    //if (!dateString) return "N/A";
+   // const date = new Date(dateString);
+   // return date.toLocaleDateString("en-US", {
+   //   weekday: 'short',
+   //   year: 'numeric',
+   //   month: 'short',
+  //    day: 'numeric'
+  //  });
+ // };
 
   // Format Firebase Timestamp to string
   const formatTimestamp = (timestamp: TimestampData | undefined) => {

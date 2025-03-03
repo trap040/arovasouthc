@@ -5,6 +5,8 @@ import { Booking } from "../types";
 import { formatRooms } from "../../../../utilis/firebaseUtils";
 import StatusBadge from "./StatusBadge";
 import PaymentStatusBadge from "./PaymentStatusBadge";
+import Image from "next/image";
+
 
 interface BookingDetailsModalProps {
   booking: Booking;
@@ -221,16 +223,18 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
               
               {booking.roomDetails ? (
                 <div className="space-y-4">
-                  {booking.roomDetails.imageURL && (
-                    <div className="w-full">
-                      <img 
-                        src={booking.roomDetails.imageURL} 
-                        alt={booking.roomDetails.name}
-                        className="h-36 w-full object-cover rounded"
-                      />
-                    </div>
-                  )}
-                  
+                {booking.roomDetails.imageURL && (
+                  <div className="w-full">
+                    <Image 
+                      src={booking.roomDetails.imageURL} 
+                      alt={booking.roomDetails.name}
+                      width={500} // Adjust as needed
+                      height={144} // Adjust to match the aspect ratio
+                      className="h-36 w-full object-cover rounded"
+                    />
+                  </div>
+                )}
+              
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <p className="text-sm text-platinum-light">Room Name</p>
