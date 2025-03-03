@@ -5,7 +5,7 @@ import { db } from "../firebase";
 
 // Room Interfaces
 export interface RoomAmenity {
-  id: string;
+  id: string;  
   name: string;
   category: string;
   status: 'working' | 'not-working';
@@ -86,8 +86,8 @@ export interface BookingCreateData {
   gender?: string;
   nationality?: string;
   idNumber?: string;
-  checkInDate: string | { seconds: number };
-  checkOutDate: string | { seconds: number };
+  checkInDate: string | { seconds: number } | undefined;
+  checkOutDate: string | { seconds: number } | undefined;
   adults: number;
   children: number;
   rooms: string[];
@@ -173,6 +173,22 @@ export const updateRoom = async (roomId: string, roomData: Partial<Room>): Promi
   }
 };
 
+export const updateRoomStatus = async (
+  roomId: string, 
+  status: Room["status"]
+): Promise<void> => {
+  try {
+    const roomRef = doc(db, "rooms", roomId);
+    await updateDoc(roomRef, {
+      status,
+      updatedAt: Timestamp.now()
+    });
+  } catch (error) {
+    console.error("Error updating room status:", error);
+    throw error;
+  }
+};
+
 export const deleteRoom = async (roomId: string): Promise<void> => {
   try {
     const roomRef = doc(db, "rooms", roomId);
@@ -245,13 +261,93 @@ export const updateBookingStatus = async (
   status: Booking["status"]
 ): Promise<void> => {
   try {
+    // Get the booking first to access its rooms
     const bookingRef = doc(db, "bookings", bookingId);
+    const bookingSnap = await getDoc(bookingRef);
+    
+    if (!bookingSnap.exists()) {
+      throw new Error("Booking not found");
+    }
+    
+    const bookingData = bookingSnap.data() as Booking;
+    
+    // Update booking status
     await updateDoc(bookingRef, {
       status,
       updatedAt: Timestamp.now()
     });
+    
+    // If status is "checked-out", update all associated rooms to "available"
+    if (status === "checked-out" && bookingData.rooms) {
+      const roomIds = Array.isArray(bookingData.rooms) ? bookingData.rooms : [bookingData.rooms];
+      
+      for (const roomId of roomIds) {
+        const roomRef = doc(db, "rooms", roomId);
+        await updateDoc(roomRef, {
+          status: 'available',
+          updatedAt: Timestamp.now()
+        });
+      }
+    }
   } catch (error) {
     console.error("Error updating booking status:", error);
+    throw error;
+  }
+};
+
+export const getBookingsByDateRange = async (
+  startDate: Date,
+  endDate: Date
+): Promise<Booking[]> => {
+  try {
+    const bookingsCollection = collection(db, "bookings");
+    const bookingSnapshot = await getDocs(bookingsCollection);
+    
+    // Convert dates to timestamps for comparison
+    const startTimestamp = Timestamp.fromDate(startDate);
+    const endTimestamp = Timestamp.fromDate(endDate);
+    
+    // Filter bookings by date range
+    return bookingSnapshot.docs
+      .map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }) as Booking)
+      .filter(booking => {
+        const bookingCheckIn = new Timestamp(booking.checkInDate.seconds, 0);
+        const bookingCheckOut = new Timestamp(booking.checkOutDate.seconds, 0);
+        
+        // A booking overlaps with the date range if:
+        // 1. Check-in date falls within the range, or
+        // 2. Check-out date falls within the range, or
+        // 3. Booking spans the entire range
+        return (
+          (bookingCheckIn.toMillis() >= startTimestamp.toMillis() && 
+           bookingCheckIn.toMillis() <= endTimestamp.toMillis()) ||
+          (bookingCheckOut.toMillis() >= startTimestamp.toMillis() && 
+           bookingCheckOut.toMillis() <= endTimestamp.toMillis()) ||
+          (bookingCheckIn.toMillis() <= startTimestamp.toMillis() && 
+           bookingCheckOut.toMillis() >= endTimestamp.toMillis())
+        );
+      });
+  } catch (error) {
+    console.error("Error fetching bookings by date range:", error);
+    throw error;
+  }
+};
+
+export const updateBookingPaymentStatus = async (
+  bookingId: string,
+  paymentStatus: Booking["paymentStatus"]
+): Promise<void> => {
+  try {
+    const bookingRef = doc(db, "bookings", bookingId);
+    await updateDoc(bookingRef, {
+      paymentStatus,
+      updatedAt: Timestamp.now()
+    });
+  } catch (error) {
+    console.error("Error updating booking payment status:", error);
     throw error;
   }
 };
@@ -265,3 +361,4 @@ export const formatRooms = (rooms: string[] | string | undefined): string => {
   }
   return 'No rooms specified';
 };
+

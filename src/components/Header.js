@@ -36,10 +36,9 @@ const Header = () => {
               <ul className="flex flex-col w-full text-center mt-[60px] md:flex-row md:mt-0">
                 {[
                   { name: "Home", link: "/" },
-                  { name: "Rooms", link: "/rooms" },
                   { name: "Events", link: "/events" },
                   { name: "Gallery", link: "/gallery" },
-                  { name: "Contact", link: "/contact" },
+                  { name: "About", link: "/about" },
                 ].map(({ name, link }) => (
                   <li key={name} className="py-3 border-b-[1px] border-solid md:py-0 md:border-none">
                     <Link

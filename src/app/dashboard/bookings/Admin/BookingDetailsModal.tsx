@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import { Booking } from "../types";
 import { formatRooms } from "../../../../utilis/firebaseUtils";
 import StatusBadge from "./StatusBadge";
-import Image from "next/image";
+import PaymentStatusBadge from "./PaymentStatusBadge";
 
 interface BookingDetailsModalProps {
   booking: Booking;
   onClose: () => void;
   onSave?: (updatedBooking: Booking) => void;
   onStatusChange?: (bookingId: string, newStatus: Booking["status"]) => void;
+  onPaymentStatusChange?: (bookingId: string, newStatus: Booking["paymentStatus"]) => void;
 }
 
 const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
@@ -18,6 +19,7 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
   onClose,
   onSave,
   onStatusChange,
+  onPaymentStatusChange,
 }) => {
   const [notes, setNotes] = useState(booking.notes || "");
   
@@ -51,15 +53,6 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
           </div>
           
           <div className="flex items-center gap-3">
-            {onStatusChange && (
-              <div className="flex items-center gap-2">
-                <span className="text-platinum text-sm">Status:</span>
-                <StatusBadge 
-                  status={booking.status}
-                  onStatusChange={(newStatus) => onStatusChange(booking.id, newStatus)}
-                />
-              </div>
-            )}
             <button
               onClick={onClose}
               className="text-platinum hover:text-white"
@@ -80,82 +73,99 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
               
               <div className="space-y-3">
                 <div>
-                  <p className="text-lion text-sm text-platinum-light">Full Name</p>
+                  <p className="text-sm text-platinum-light">Full Name</p>
                   <p className="text-platinum font-medium">{booking.customerName}</p>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-lion text-sm text-platinum-light">Phone Number</p>
+                    <p className="text-sm text-platinum-light">Phone Number</p>
                     <p className="text-platinum">{booking.phoneNumber}</p>
                   </div>
                   <div>
-                    <p className="text-lion text-sm text-platinum-light">Email</p>
+                    <p className="text-sm text-platinum-light">Email</p>
                     <p className="text-platinum">{booking.email || "Not provided"}</p>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-lion text-sm text-platinum-light">Gender</p>
+                    <p className="text-sm text-platinum-light">Gender</p>
                     <p className="text-platinum">{booking.gender || "Not provided"}</p>
                   </div>
                   <div>
-                    <p className="text-lion text-sm text-platinum-light">Nationality</p>
+                    <p className="text-sm text-platinum-light">Nationality</p>
                     <p className="text-platinum">{booking.nationality || "Not provided"}</p>
                   </div>
                 </div>
                 
                 <div>
-                  <p className="text-lion text-sm text-platinum-light">ID/Passport Number</p>
+                  <p className="text-sm text-platinum-light">ID/Passport Number</p>
                   <p className="text-platinum">{booking.idNumber || "Not provided"}</p>
                 </div>
               </div>
             </div>
             
-           {/* Payment Information Card */}
+            {/* Status Management Card */}
             <div className="bg-nero p-4 rounded-lg">
-             <h3 className="text-lion font-semibold text-lg mb-3 border-b border-gray-700 pb-2">
-               Payment Information
-             </h3>
-  
-             <div className="space-y-3">
-               <div className="grid grid-cols-2 gap-3">
+              <h3 className="text-lion font-semibold text-lg mb-3 border-b border-gray-700 pb-2">
+                Status Management
+              </h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-platinum-light mb-2">Booking Status</p>
+                  {onStatusChange ? (
+                    <StatusBadge 
+                      status={booking.status} 
+                      onStatusChange={(newStatus) => onStatusChange(booking.id, newStatus)}
+                    />
+                  ) : (
+                    <StatusBadge status={booking.status} />
+                  )}
+                </div>
+                
+                <div>
+                  <p className="text-sm text-platinum-light mb-2">Payment Status</p>
+                  {onPaymentStatusChange ? (
+                    <PaymentStatusBadge 
+                      status={booking.paymentStatus || "pending"} 
+                      onStatusChange={(newStatus) => onPaymentStatusChange(booking.id, newStatus)}
+                    />
+                  ) : (
+                    <PaymentStatusBadge status={booking.paymentStatus || "pending"} />
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            {/* Payment Information Card */}
+            <div className="bg-nero p-4 rounded-lg">
+              <h3 className="text-lion font-semibold text-lg mb-3 border-b border-gray-700 pb-2">
+                Payment Information
+              </h3>
+              
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-lion  text-sm text-platinum-light">Total Amount</p>
-                   <p className="text-platinum font-medium">${booking.totalAmount ? booking.totalAmount.toFixed(2) : "0.00"}</p>
-                 </div>
+                    <p className="text-sm text-platinum-light">Total Amount</p>
+                    <p className="text-platinum font-medium">${booking.totalAmount?.toFixed(2) || "0.00"}</p>
+                  </div>
                   <div>
-                    <p className="text-lion  text-sm text-platinum-light">Payment Status</p>
-                    <p className={`${
-                      booking.paymentStatus === "paid" ? "text-green-500" :
-                      booking.paymentStatus === "partial" ? "text-yellow-500" :
-                      "text-red-500"
-                    } font-medium`}>
-                      {booking.paymentStatus ? booking.paymentStatus.toUpperCase() : "PENDING"}
-                    </p>
+                    <p className="text-sm text-platinum-light">Payment Method</p>
+                    <p className="text-platinum">Not specified</p>
                   </div>
                 </div>
-    
+                
                 {booking.totalNights && (
                   <div>
-                    <p className="text-lion  text-sm text-platinum-light">Price Calculation</p>
+                    <p className="text-sm text-platinum-light">Price Calculation</p>
                     <p className="text-platinum">
-                      ${booking.roomDetails?.price || 0} × {booking.totalNights} nights = ${booking.totalAmount ? booking.totalAmount.toFixed(2) : "0.00"}
+                      ${booking.roomDetails?.price || 0} × {booking.totalNights} nights = ${booking.totalAmount?.toFixed(2) || "0.00"}
                     </p>
                   </div>
                 )}
-             </div>
-            </div>
-            
-            {/* Special Requests */}
-            <div className="bg-nero p-4 rounded-lg">
-              <h3 className="text-lion font-semibold text-lg mb-3 border-b border-gray-700 pb-2">
-                Special Requests
-              </h3>
-              <p className="text-platinum">
-                {booking.specialRequests || "No special requests"}
-              </p>
+              </div>
             </div>
           </div>
           
@@ -170,33 +180,33 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-lion underline text-sm text-platinum-light">Check-in Date</p>
+                    <p className="text-sm text-platinum-light">Check-in Date</p>
                     <p className="text-platinum">{formatDate(booking.checkInDate)}</p>
                   </div>
                   <div>
-                    <p className="text-lion underline text-sm text-platinum-light">Check-out Date</p>
+                    <p className="text-sm text-platinum-light">Check-out Date</p>
                     <p className="text-platinum">{formatDate(booking.checkOutDate)}</p>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-lion underline text-sm text-platinum-light">Adults</p>
-                    <p className="text-platinum">{booking.adults}</p>
+                    <p className="text-sm text-platinum-light">Adults</p>
+                    <p className="text-platinum">{booking.adults || 0}</p>
                   </div>
                   <div>
-                    <p className="text-lion underline text-sm text-platinum-light">Children</p>
-                    <p className="text-platinum">{booking.children}</p>
+                    <p className="text-sm text-platinum-light">Children</p>
+                    <p className="text-platinum">{booking.children || 0}</p>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-lion underline text-sm text-platinum-light">Total Nights</p>
+                    <p className="text-sm text-platinum-light">Total Nights</p>
                     <p className="text-platinum">{booking.totalNights || "N/A"}</p>
                   </div>
                   <div>
-                    <p className="text-lion underline text-sm text-platinum-light">Booking Date</p>
+                    <p className="text-sm text-platinum-light">Booking Date</p>
                     <p className="text-platinum">{formatDate(booking.bookingDate)}</p>
                   </div>
                 </div>
@@ -213,25 +223,21 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
                 <div className="space-y-4">
                   {booking.roomDetails.imageURL && (
                     <div className="w-full">
-                      <Image 
+                      <img 
                         src={booking.roomDetails.imageURL} 
                         alt={booking.roomDetails.name}
-                        width={500} // Adjust as needed
-                        height={144} // Matches h-36 (36 * 4px)
-                        className="w-full object-cover rounded"
-                        priority
+                        className="h-36 w-full object-cover rounded"
                       />
                     </div>
-                    
                   )}
                   
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <p className="text-lion  text-sm text-platinum-light">Room Name</p>
+                      <p className="text-sm text-platinum-light">Room Name</p>
                       <p className="text-platinum">{booking.roomDetails.name}</p>
                     </div>
                     <div>
-                      <p className="text-lion  text-sm text-platinum-light">Room Price</p>
+                      <p className="text-sm text-platinum-light">Room Price</p>
                       <p className="text-platinum">${booking.roomDetails.price}/night</p>
                     </div>
                   </div>
@@ -248,6 +254,16 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
                   </div>
                 </div>
               )}
+            </div>
+            
+            {/* Special Requests */}
+            <div className="bg-nero p-4 rounded-lg">
+              <h3 className="text-lion font-semibold text-lg mb-3 border-b border-gray-700 pb-2">
+                Special Requests
+              </h3>
+              <p className="text-platinum">
+                {booking.specialRequests || "No special requests"}
+              </p>
             </div>
             
             {/* Notes Section */}
