@@ -150,12 +150,12 @@ const bookingData = {
     price: selectedRoom?.price || 0,
     imageURL: selectedRoom?.imageURL || "",
   },
-  status: "confirmed" as "confirmed",
+  status: "confirmed" as const,
 
   specialRequests: formData.specialRequests,
   totalAmount: totalPrice,
   totalNights: totalNights,
-  paymentStatus: "pending" as "pending",
+  paymentStatus: "pending" as const,
 
   bookingDate: new Date().toISOString(),
 };

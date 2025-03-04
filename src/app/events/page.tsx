@@ -276,7 +276,7 @@ export default function EventsPage() {
             <h2 className="font-gilda text-3xl mb-6 text-eerie-black">Events Calendar</h2>
             <div className="w-16 h-1 bg-lion mx-auto mb-8"></div>
             <p className="text-gray-600 max-w-3xl mx-auto">
-              Plan your stay around our exciting events. Here's a glimpse of what's happening at Arova Hotel in the coming months.
+              Plan your stay around our exciting events. Here&apos;s a glimpse of what&apos;s happening at Arova Hotel in the coming months.
             </p>
           </div>
           
@@ -330,7 +330,7 @@ export default function EventsPage() {
               <h2 className="font-gilda text-3xl mb-6 text-eerie-black">Host Your Event With Us</h2>
               <div className="w-16 h-1 bg-lion mb-8"></div>
               <p className="text-gray-600 mb-6">
-                Whether you're planning a corporate meeting, wedding reception, or special celebration, 
+                Whether you&apos;re planning a corporate meeting, wedding reception, or special celebration, 
                 Arova Hotel offers elegant venues and professional planning services to make your event exceptional.
               </p>
               <p className="text-gray-600 mb-6">

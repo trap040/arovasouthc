@@ -134,7 +134,7 @@ export default function GalleryPage() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!modalOpen) return;
-  
+      
       switch (e.key) {
         case 'ArrowLeft':
           prevImage();
@@ -149,11 +149,10 @@ export default function GalleryPage() {
           break;
       }
     };
-  
+    
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [modalOpen, currentIndex]);
-  
+  }, [modalOpen, currentIndex, prevImage, nextImage, closeModal]);
   
   // Reset loading state when image changes
   useEffect(() => {
