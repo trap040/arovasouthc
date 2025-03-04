@@ -132,31 +132,34 @@ const handleSubmit = async (e: React.FormEvent) => {
   setError("");
 
   try {
-    const bookingData = {
-      customerName: formData.fullName,
-      phoneNumber: formData.phoneNumber,
-      email: formData.email,
-      gender: formData.gender,
-      nationality: formData.nationality,
-      idNumber: formData.idNumber,
-      checkInDate: checkInDate?.toISOString(),
-      checkOutDate: checkOutDate?.toISOString(),
-      adults: parseInt(formData.adults),
-      children: parseInt(formData.children),
-      rooms: [roomId],
-      roomDetails: {
-        id: selectedRoom?.id,
-        name: selectedRoom?.name,
-        price: selectedRoom?.price,
-        imageURL: selectedRoom?.imageURL
-      },
-      status: "confirmed",
-      specialRequests: formData.specialRequests,
-      totalAmount: totalPrice,
-      totalNights: totalNights,
-      paymentStatus: "pending",
-      bookingDate: new Date().toISOString(),
-    };
+const bookingData = {
+  customerName: formData.fullName,
+  phoneNumber: formData.phoneNumber,
+  email: formData.email,
+  gender: formData.gender,
+  nationality: formData.nationality,
+  idNumber: formData.idNumber,
+  checkInDate: checkInDate?.toISOString(),
+  checkOutDate: checkOutDate?.toISOString(),
+  adults: parseInt(formData.adults),
+  children: parseInt(formData.children),
+  rooms: roomId ? [roomId] : [], // Ensure an empty array if `roomId` is null
+  roomDetails: {
+    id: selectedRoom?.id || "", // Ensure it's always a string
+    name: selectedRoom?.name || "Unknown Room",
+    price: selectedRoom?.price || 0,
+    imageURL: selectedRoom?.imageURL || "",
+  },
+  status: "confirmed" as "confirmed",
+
+  specialRequests: formData.specialRequests,
+  totalAmount: totalPrice,
+  totalNights: totalNights,
+  paymentStatus: "pending" as "pending",
+
+  bookingDate: new Date().toISOString(),
+};
+
 
     // Create the booking in Firebase
     const bookingId = await createBooking(bookingData);

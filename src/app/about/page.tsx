@@ -8,7 +8,7 @@ const AboutPage = () => {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <div className="relative h-[60vh] lg:h-[70vh]">
+      <div className="relative h-[40vh] lg:h-[50vh]">
         <Image 
           src="/images/about.jpg" 
           alt="Arova Hotel" 

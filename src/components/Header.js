@@ -19,8 +19,8 @@ const Header = () => {
                 <Image 
                   src="/logo.png" 
                   alt="Arova Hotel Logo"
-                  width={150} 
-                  height={700} 
+                  width={100} 
+                  height={200} 
                />
               </Link>
               <button type="button" className="text-white md:hidden" onClick={() => setNavbarOpen(!navbarOpen)}>

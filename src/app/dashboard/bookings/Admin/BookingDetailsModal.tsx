@@ -75,34 +75,34 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
               
               <div className="space-y-3">
                 <div>
-                  <p className="text-sm text-platinum-light">Full Name</p>
+                  <p className="text-sm text-lion text-platinum-light">Full Name</p>
                   <p className="text-platinum font-medium">{booking.customerName}</p>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-sm text-platinum-light">Phone Number</p>
+                    <p className="text-sm text-lion text-platinum-light">Phone Number</p>
                     <p className="text-platinum">{booking.phoneNumber}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-platinum-light">Email</p>
+                    <p className="text-sm text-lion text-platinum-light">Email</p>
                     <p className="text-platinum">{booking.email || "Not provided"}</p>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-sm text-platinum-light">Gender</p>
+                    <p className="text-sm text-lion text-platinum-light">Gender</p>
                     <p className="text-platinum">{booking.gender || "Not provided"}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-platinum-light">Nationality</p>
+                    <p className="text-sm text-lion text-platinum-light">Nationality</p>
                     <p className="text-platinum">{booking.nationality || "Not provided"}</p>
                   </div>
                 </div>
                 
                 <div>
-                  <p className="text-sm text-platinum-light">ID/Passport Number</p>
+                  <p className="text-sm text-lion text-platinum-light">ID/Passport Number</p>
                   <p className="text-platinum">{booking.idNumber || "Not provided"}</p>
                 </div>
               </div>
@@ -116,7 +116,7 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
               
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm text-platinum-light mb-2">Booking Status</p>
+                  <p className="text-sm text-lion text-platinum-light mb-2">Booking Status</p>
                   {onStatusChange ? (
                     <StatusBadge 
                       status={booking.status} 
@@ -128,7 +128,7 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
                 </div>
                 
                 <div>
-                  <p className="text-sm text-platinum-light mb-2">Payment Status</p>
+                  <p className="text-sm text-lion text-platinum-light mb-2">Payment Status</p>
                   {onPaymentStatusChange ? (
                     <PaymentStatusBadge 
                       status={booking.paymentStatus || "pending"} 
@@ -150,18 +150,18 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-sm text-platinum-light">Total Amount</p>
+                    <p className="text-sm text-lion text-platinum-light">Total Amount</p>
                     <p className="text-platinum font-medium">${booking.totalAmount?.toFixed(2) || "0.00"}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-platinum-light">Payment Method</p>
+                    <p className="text-sm text-lion text-platinum-light">Payment Method</p>
                     <p className="text-platinum">Not specified</p>
                   </div>
                 </div>
                 
                 {booking.totalNights && (
                   <div>
-                    <p className="text-sm text-platinum-light">Price Calculation</p>
+                    <p className="text-sm text-lion text-platinum-light">Price Calculation</p>
                     <p className="text-platinum">
                       ${booking.roomDetails?.price || 0} × {booking.totalNights} nights = ${booking.totalAmount?.toFixed(2) || "0.00"}
                     </p>
@@ -182,33 +182,33 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-sm text-platinum-light">Check-in Date</p>
+                    <p className="text-sm text-lion text-platinum-light">Check-in Date</p>
                     <p className="text-platinum">{formatDate(booking.checkInDate)}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-platinum-light">Check-out Date</p>
+                    <p className="text-sm text-lion text-platinum-light">Check-out Date</p>
                     <p className="text-platinum">{formatDate(booking.checkOutDate)}</p>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-sm text-platinum-light">Adults</p>
+                    <p className="text-sm text-lion text-platinum-light">Adults</p>
                     <p className="text-platinum">{booking.adults || 0}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-platinum-light">Children</p>
+                    <p className="text-sm text-lion text-platinum-light">Children</p>
                     <p className="text-platinum">{booking.children || 0}</p>
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-sm text-platinum-light">Total Nights</p>
+                    <p className="text-sm text-lion text-platinum-light">Total Nights</p>
                     <p className="text-platinum">{booking.totalNights || "N/A"}</p>
                   </div>
                   <div>
-                    <p className="text-sm text-platinum-light">Booking Date</p>
+                    <p className="text-sm text-lion text-platinum-light">Booking Date</p>
                     <p className="text-platinum">{formatDate(booking.bookingDate)}</p>
                   </div>
                 </div>
@@ -237,18 +237,18 @@ const BookingDetailsModal: React.FC<BookingDetailsModalProps> = ({
               
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <p className="text-sm text-platinum-light">Room Name</p>
+                      <p className="text-sm text-lion text-platinum-light">Room Name</p>
                       <p className="text-platinum">{booking.roomDetails.name}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-platinum-light">Room Price</p>
+                      <p className="text-sm text-lion text-platinum-light">Room Price</p>
                       <p className="text-platinum">${booking.roomDetails.price}/night</p>
                     </div>
                   </div>
                 </div>
               ) : (
                 <div className="space-y-3">
-                  <p className="text-sm text-platinum-light">Room IDs</p>
+                  <p className="text-sm text-lion text-platinum-light">Room IDs</p>
                   <div className="flex flex-wrap gap-2">
                     {formatRooms(booking.rooms).split(", ").map((room, index) => (
                       <span key={index} className="bg-nero-dark px-3 py-1 rounded text-platinum">
