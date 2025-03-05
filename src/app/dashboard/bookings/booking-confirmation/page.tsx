@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { doc, getDoc, DocumentData } from 'firebase/firestore';
@@ -38,7 +38,8 @@ interface TimestampData {
   nanoseconds?: number;
 }
 
-const BookingConfirmation = () => {
+// This component uses useSearchParams, so it needs to be wrapped in Suspense
+function BookingDetails() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const bookingId = searchParams.get('bookingId');
@@ -77,18 +78,6 @@ const BookingConfirmation = () => {
 
     fetchBookingDetails();
   }, [bookingId]);
-
-  // Format date to string
-  //const formatDate = (dateString: string | undefined) => {
-    //if (!dateString) return "N/A";
-   // const date = new Date(dateString);
-   // return date.toLocaleDateString("en-US", {
-   //   weekday: 'short',
-   //   year: 'numeric',
-   //   month: 'short',
-  //    day: 'numeric'
-  //  });
- // };
 
   // Format Firebase Timestamp to string
   const formatTimestamp = (timestamp: TimestampData | undefined) => {
@@ -252,6 +241,21 @@ const BookingConfirmation = () => {
         </div>
       </div>
     </section>
+  );
+}
+
+// Main component that wraps BookingDetails with Suspense
+const BookingConfirmation = () => {
+  return (
+    <Suspense fallback={
+      <section className="py-16 px-3 bg-booking-image bg-center bg-cover bg-no-repeat">
+        <div className="container max-w-[1200px] mx-auto text-center">
+          <div className="text-white text-lg">Loading booking details...</div>
+        </div>
+      </section>
+    }>
+      <BookingDetails />
+    </Suspense>
   );
 };
 

@@ -2,12 +2,11 @@
 
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { fetchRooms, createBooking } from '../utilis/firebaseUtils';
 import { Room } from '../types/room';
-import { useMemo } from "react";
 
 interface BookingFormData {
   fullName: string;
@@ -35,7 +34,6 @@ const BookingSection = () => {
 
   // Parse dates from query parameters
   const checkInDate = useMemo(() => (checkInStr ? new Date(checkInStr) : null), [checkInStr]);
-
   const checkOutDate = useMemo(() => (checkOutStr ? new Date(checkOutStr) : null), [checkOutStr]);
 
   // State for selected room and booking info
@@ -114,64 +112,61 @@ const BookingSection = () => {
     });
   };
 
-// Handle form submission
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  
-  if (!formData.fullName || !formData.phoneNumber) {
-    setError("Please fill in required fields.");
-    return;
-  }
-
-  if (!formData.acceptTerms) {
-    setError("Please accept terms and conditions.");
-    return;
-  }
-
-  setIsSubmitting(true);
-  setError("");
-
-  try {
-const bookingData = {
-  customerName: formData.fullName,
-  phoneNumber: formData.phoneNumber,
-  email: formData.email,
-  gender: formData.gender,
-  nationality: formData.nationality,
-  idNumber: formData.idNumber,
-  checkInDate: checkInDate?.toISOString(),
-  checkOutDate: checkOutDate?.toISOString(),
-  adults: parseInt(formData.adults),
-  children: parseInt(formData.children),
-  rooms: roomId ? [roomId] : [], // Ensure an empty array if `roomId` is null
-  roomDetails: {
-    id: selectedRoom?.id || "", // Ensure it's always a string
-    name: selectedRoom?.name || "Unknown Room",
-    price: selectedRoom?.price || 0,
-    imageURL: selectedRoom?.imageURL || "",
-  },
-  status: "confirmed" as const,
-
-  specialRequests: formData.specialRequests,
-  totalAmount: totalPrice,
-  totalNights: totalNights,
-  paymentStatus: "pending" as const,
-
-  bookingDate: new Date().toISOString(),
-};
-
-
-    // Create the booking in Firebase
-    const bookingId = await createBooking(bookingData);
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     
-    // Update the path to match your folder structure
-    router.push(`/dashboard/bookings/booking-confirmation?bookingId=${bookingId}`);
-  } catch (error) {
-    console.error("Error creating booking:", error);
-    setError("Failed to create booking. Please try again.");
-    setIsSubmitting(false);
-  }
-};
+    if (!formData.fullName || !formData.phoneNumber) {
+      setError("Please fill in required fields.");
+      return;
+    }
+
+    if (!formData.acceptTerms) {
+      setError("Please accept terms and conditions.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const bookingData = {
+        customerName: formData.fullName,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        gender: formData.gender,
+        nationality: formData.nationality,
+        idNumber: formData.idNumber,
+        checkInDate: checkInDate?.toISOString(),
+        checkOutDate: checkOutDate?.toISOString(),
+        adults: parseInt(formData.adults),
+        children: parseInt(formData.children),
+        rooms: roomId ? [roomId] : [], // Ensure an empty array if `roomId` is null
+        roomDetails: {
+          id: selectedRoom?.id || "", // Ensure it's always a string
+          name: selectedRoom?.name || "Unknown Room",
+          price: selectedRoom?.price || 0,
+          imageURL: selectedRoom?.imageURL || "",
+        },
+        status: "confirmed" as const,
+        specialRequests: formData.specialRequests,
+        totalAmount: totalPrice,
+        totalNights: totalNights,
+        paymentStatus: "pending" as const,
+        bookingDate: new Date().toISOString(),
+      };
+
+      // Create the booking in Firebase
+      const bookingId = await createBooking(bookingData);
+      
+      // Update the path to match your folder structure
+      router.push(`/dashboard/bookings/booking-confirmation?bookingId=${bookingId}`);
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      setError("Failed to create booking. Please try again.");
+      setIsSubmitting(false);
+    }
+  };
 
   // Format date to string
   const formatDate = (date: Date | null) => {
@@ -228,20 +223,20 @@ const bookingData = {
         {selectedRoom && (
           <div className="my-8 max-w-[824px] mx-auto bg-black bg-opacity-50 p-6 rounded">
             <div className="flex flex-col md:flex-row gap-6">
-              <div className="md:w-1/3">
+              <div className="md:w-1/3 relative h-48">
                 <Image
                   src={selectedRoom.imageURL}
                   alt={selectedRoom.name}
-                  layout="fill"  
-                  objectFit="cover"  
-                  className="w-full h-48 object-cover rounded"
+                  fill
+                  className="object-cover rounded"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
               <div className="md:w-2/3 text-white">
                 <div className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="text-2xl font-gilda">{selectedRoom.name}</h3>
-                    <p className="text-sm opacity-90">{selectedRoom.category} • {selectedRoom.type}</p>
+                    <p className="text-sm opacity-90">{selectedRoom.category || 'Standard'} • {selectedRoom.type || 'Room'}</p>
                   </div>
                   <div className="text-xl font-bold">${selectedRoom.price}<span className="text-sm">/night</span></div>
                 </div>
@@ -291,95 +286,95 @@ const bookingData = {
 
         {/* Booking Form */}
         <form onSubmit={handleSubmit} className="my-8 max-w-[824px] mx-auto">
-         {error && (
+          {error && (
             <div className="bg-red-500 bg-opacity-70 text-white p-3 rounded mb-6 text-center">
               {error}
             </div>
-         )}
-  
-         <div className="my-3">
-           <input
-             type="text"
-             name="fullName"
-             value={formData.fullName}
-             onChange={handleInputChange}
-             className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full"
-             placeholder="Full Name *"
-             required
-           />
-         </div>
-  
-         <div className="grid md:grid-cols-2 md:my-3 md:gap-x-10">
-           <input
-             type="tel"
-             name="phoneNumber"
-             value={formData.phoneNumber}
-             onChange={handleInputChange}
-             className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full my-3"
-             placeholder="Phone Number *"
-             required
-           />
+          )}
+          
+          <div className="my-3">
             <input
-             type="email"
-             name="email"
-             value={formData.email}
-             onChange={handleInputChange}
-             className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full my-3"
-             placeholder="Email Address"
-           />
-         </div>
-  
-         <div className="grid md:grid-cols-2 md:my-3 md:gap-x-10">
-           <div className="my-3">
-             <select
-               name="gender"
-               value={formData.gender}
-               onChange={handleInputChange}
-               className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full appearance-none"
-               required
-             >
-               <option value="" disabled className="text-gray-700">Select Gender *</option>
-               <option value="male" className="text-gray-700">Male</option>
-               <option value="female" className="text-gray-700">Female</option>
-               <option value="other" className="text-gray-700">Other</option>
-               <option value="prefer-not-to-say" className="text-gray-700">Prefer not to say</option>
-             </select>
-           </div>
-           <div className="my-3">
-             <input
-               type="text"
-               name="nationality"
-               value={formData.nationality}
-               onChange={handleInputChange}
-               className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full"
-               placeholder="Nationality *"
-               required
-             />
-           </div>
-         </div>
-  
-         <div className="my-3">
-           <input
-             type="text"
-             name="idNumber"
-             value={formData.idNumber}
-             onChange={handleInputChange}
-             className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full"
-             placeholder="ID/Passport Number *"
-             required
-           />
-         </div>
-  
-         <div className="my-3">
-           <textarea
-             name="specialRequests"
-             value={formData.specialRequests}
+              type="text"
+              name="fullName"
+              value={formData.fullName}
               onChange={handleInputChange}
-             className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full h-32 resize-none"
+              className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full"
+              placeholder="Full Name *"
+              required
+            />
+          </div>
+          
+          <div className="grid md:grid-cols-2 md:my-3 md:gap-x-10">
+            <input
+              type="tel"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleInputChange}
+              className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full my-3"
+              placeholder="Phone Number *"
+              required
+            />
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full my-3"
+              placeholder="Email Address"
+            />
+          </div>
+          
+          <div className="grid md:grid-cols-2 md:my-3 md:gap-x-10">
+            <div className="my-3">
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleInputChange}
+                className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full appearance-none"
+                required
+              >
+                <option value="" disabled className="text-gray-700">Select Gender *</option>
+                <option value="male" className="text-gray-700">Male</option>
+                <option value="female" className="text-gray-700">Female</option>
+                <option value="other" className="text-gray-700">Other</option>
+                <option value="prefer-not-to-say" className="text-gray-700">Prefer not to say</option>
+              </select>
+            </div>
+            <div className="my-3">
+              <input
+                type="text"
+                name="nationality"
+                value={formData.nationality}
+                onChange={handleInputChange}
+                className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full"
+                placeholder="Nationality *"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="my-3">
+            <input
+              type="text"
+              name="idNumber"
+              value={formData.idNumber}
+              onChange={handleInputChange}
+              className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full"
+              placeholder="ID/Passport Number *"
+              required
+            />
+          </div>
+          
+          <div className="my-3">
+            <textarea
+              name="specialRequests"
+              value={formData.specialRequests}
+              onChange={handleInputChange}
+              className="outline-none py-4 px-5 bg-transparent caret-white text-white text-lg tracking-[.04em] font-light font-barlow placeholder:text-white border-white border-solid border-b-[1px] w-full h-32 resize-none"
               placeholder="Special Requests (optional)"
             />
           </div>
-  
+          
           <div className="my-6">
             <label className="flex items-center text-white">
               <input
@@ -391,20 +386,20 @@ const bookingData = {
                 required
               />
               <span className="text-sm">
-               I accept the <a href="#" className="underline">terms and conditions</a> and the <a href="#" className="underline">privacy policy</a>
-             </span>
-           </label>
-         </div>
-       
-         <div className="flex items-center justify-center">
-           <button
-             type="submit"
-             disabled={isSubmitting}
-             className="bg-white font-barlow px-4 min-w-[158px] min-h-[48px] inline-flex items-center justify-center uppercase text-eerie-black transition duration-300 ease-in-out hover:bg-eerie-black hover:text-white mt-8 tracking-widest disabled:opacity-70"
-           >
-             {isSubmitting ? "Processing..." : "Complete Booking"}
-           </button>
-         </div>
+                I accept the <a href="#" className="underline">terms and conditions</a> and the <a href="#" className="underline">privacy policy</a>
+              </span>
+            </label>
+          </div>
+          
+          <div className="flex items-center justify-center">
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-white font-barlow px-4 min-w-[158px] min-h-[48px] inline-flex items-center justify-center uppercase text-eerie-black transition duration-300 ease-in-out hover:bg-eerie-black hover:text-white mt-8 tracking-widest disabled:opacity-70"
+            >
+              {isSubmitting ? "Processing..." : "Complete Booking"}
+            </button>
+          </div>
         </form>
       </div>
     </section>
