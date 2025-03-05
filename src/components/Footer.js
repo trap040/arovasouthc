@@ -84,7 +84,7 @@ const Footer = () => {
               Socials
             </h4>
             <div className="flex flex-col items-center md:items-start space-y-4">
-              <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer" 
+              <Link href="https://web.facebook.com/profile.php?id=61573043998919" target="_blank" rel="noopener noreferrer" 
                 className="flex items-center text-white hover:text-lion transition-colors group">
                 <span className="w-7 h-7 rounded-full bg-lion flex items-center justify-center group-hover:bg-white transition-colors mr-3">
                   <FontAwesomeIcon icon={faFacebookF} className="text-white group-hover:text-lion w-3 h-3" />
@@ -92,7 +92,7 @@ const Footer = () => {
                 <span className="text-white/50 font-light group-hover:text-white/80">Facebook</span>
               </Link>
               
-              <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+              <Link href="https://www.instagram.com/arova_hotel/" target="_blank" rel="noopener noreferrer"
                 className="flex items-center text-white hover:text-lion transition-colors group">
                 <span className="w-7 h-7 rounded-full bg-lion flex items-center justify-center group-hover:bg-white transition-colors mr-3">
                   <FontAwesomeIcon icon={faInstagram} className="text-white group-hover:text-lion w-3 h-3" />
