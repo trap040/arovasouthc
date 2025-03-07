@@ -74,7 +74,7 @@ export default function GalleryPage() {
       description: 'Exquisite culinary experiences await'
     },
     { 
-      src: '/images/luxury.jpg', 
+      src: '/images/luxury.png', 
       title: 'Luxury Suite', 
       category: 'rooms',
       description: 'Spacious accommodations for ultimate comfort'
@@ -294,7 +294,7 @@ export default function GalleryPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="aspect-[3/4] relative rounded-lg overflow-hidden shadow-lg">
                 <Image 
-                  src="/images/exit.jpg" 
+                  src="/images/exit.png" 
                   alt="Hotel Experience" 
                   fill
                   className="object-cover" 
@@ -302,7 +302,7 @@ export default function GalleryPage() {
               </div>
               <div className="aspect-[3/4] relative rounded-lg overflow-hidden shadow-lg mt-8">
                 <Image 
-                  src="/images/experience.jpg" 
+                  src="/images/experience.png" 
                   alt="Hotel Experience" 
                   fill
                   className="object-cover" 
