@@ -92,7 +92,7 @@ const BookingForm = () => {
     <div className="font-barlow mt-16">
       {!showRooms ? (
         // Initial Search Form
-        <form onSubmit={handleCheckAvailability} className="bg-white w-full grid sm:grid-cols-2 lg:grid-cols-5">
+        <form onSubmit={handleCheckAvailability} className="bg-nero w-full grid sm:grid-cols-2 lg:grid-cols-5">
           {error && (
             <div className="col-span-full text-red-500 text-center bg-red-50 border border-red-200 p-2">
               {error}
@@ -107,7 +107,7 @@ const BookingForm = () => {
               placeholderText="Check In"
               dateFormat="dd/MM/yyyy"
               minDate={new Date()}
-              className="placeholder:text-eerie-black placeholder:uppercase text-sm outline-none border-none w-full"
+              className="placeholder:text-white bg-nero placeholder:uppercase text-sm outline-none border-none w-full"
             />
             <span className="cursor-pointer">
               <Image src="/icons/calendar.svg" width={20} height={20} alt="calendar" />
@@ -122,19 +122,20 @@ const BookingForm = () => {
               placeholderText="Check Out"
               dateFormat="dd/MM/yyyy"
               minDate={checkInDate ? new Date(checkInDate.getTime() + 86400000) : new Date()}
-              className="placeholder:text-eerie-black placeholder:uppercase text-sm outline-none border-none w-full"
+              className="placeholder:text-white bg-nero placeholder:uppercase text-sm outline-none border-none w-full"
             />
             <span className="cursor-pointer">
               <Image src="/icons/calendar.svg" width={20} height={20} alt="calendar" />
             </span>
           </div>
+           
 
           {/* Adults */}
-          <div className="px-2 py-4 border">
+          <div className="px-2 py-4 border ">
             <select
               value={adults}
               onChange={(e) => setAdults(e.target.value)}
-              className="min-w-full uppercase text-eerie-black outline-none"
+              className="min-w-full uppercase text-white bg-nero outline-none"
             >
               <option disabled value="">Adults</option>
               {capacityOptions.adults.map(num => (
@@ -148,7 +149,7 @@ const BookingForm = () => {
             <select
               value={children}
               onChange={(e) => setChildren(e.target.value)}
-              className="min-w-full uppercase text-eerie-black outline-none"
+              className="min-w-full uppercase text-white bg-nero outline-none"
             >
               <option disabled value="">Children</option>
               {capacityOptions.children.map(num => (
